@@ -16,7 +16,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "UPDATE_ME"
+    bucket = "bkt-kvi-gcp-foundation-tfstate"
     prefix = "terraform/org/state"
   }
 }

@@ -22,7 +22,22 @@ locals {
   Top level folders
  *****************************************/
 
-resource "google_folder" "common" {
-  display_name = "${var.folder_prefix}-common"
-  parent       = local.parent
+resource "google_folder" "billing" {
+    parent = local.parent
+    display_name = "fldr-billing"
+}
+
+resource "google_folder" "security" {
+    parent = local.parent
+    display_name = "fldr-security"
+}
+
+resource "google_folder" "engineering" {
+    parent = local.parent
+    display_name = "fldr-engineering"
+}
+
+resource "google_folder" "legacy" {
+    parent = local.parent
+    display_name = "fldr-legacy"
 }

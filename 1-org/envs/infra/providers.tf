@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  tf_sa = var.terraform_service_account
-}
-
 provider "google" {
   alias = "impersonate"
 
@@ -29,7 +25,7 @@ provider "google" {
 
 data "google_service_account_access_token" "default" {
   provider               = google.impersonate
-  target_service_account = local.tf_sa
+  target_service_account = local.terraform_service_account
   scopes                 = ["userinfo-email", "cloud-platform"]
   lifetime               = "600s"
 }

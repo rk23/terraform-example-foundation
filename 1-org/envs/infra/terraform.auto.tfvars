@@ -14,23 +14,9 @@
  * limitations under the License.
  */
 
-domains_to_allow = ["example.com"]
-
-billing_data_users = "gcp-billing-admins@example.com"
-
-audit_data_users = "gcp-security-admins@example.com"
-
-org_id = "000000000000"
-
-billing_account = "000000-000000-000000"
-
-terraform_service_account = "org-terraform@example-project-2334.iam.gserviceaccount.com"
-
-default_region = "us-central1"
-
+domains_to_allow = ["karavi.cloud"]
+org_id = "69124848450"
 scc_notification_name = "scc-notify"
-
-//Optional - for development.  Will place all resources under a specific folder instead of org root
-//parent_folder = "01234567890"
-//scc_notification_filter = "state=\\\"ACTIVE\\\""
-//create_access_context_manager_access_policy = false
+environment = "infra"
+environment_code = "c"
+resource_locations = ["in:us-locations"]
