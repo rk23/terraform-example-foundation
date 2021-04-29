@@ -1,0 +1,8 @@
+org_id = "69124848450"
+billing_account = "0179A9-C78880-4AFB85"
+group_org_admins = "gcp-organization-admins@karavi.cloud"
+group_billing_admins = "gcp-billing-admins@karavi.cloud"
+default_region = "us-east1"
+domain = "karavi.cloud"
+org_shortname = "kvi"
+bucket_location = "us-east1"
