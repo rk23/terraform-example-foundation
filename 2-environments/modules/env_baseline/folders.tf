@@ -3,6 +3,6 @@
 *****************************************/
 
 resource "google_folder" "env" {
-  display_name = "${var.folder_prefix}-${var.env}"
+  display_name = "${var.folder_prefix}-${var.environment}"
   parent       = local.parent
 }
