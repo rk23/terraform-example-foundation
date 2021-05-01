@@ -23,21 +23,21 @@ locals {
  *****************************************/
 
 resource "google_folder" "billing" {
-    parent = local.parent
-    display_name = "fldr-billing"
+  parent       = local.parent
+  display_name = "fldr-billing"
 }
 
 resource "google_folder" "security" {
-    parent = local.parent
-    display_name = "fldr-security"
+  parent       = local.parent
+  display_name = "fldr-security"
 }
 
 resource "google_folder" "engineering" {
-    parent = local.parent
-    display_name = "fldr-engineering"
+  parent       = local.parent
+  display_name = "fldr-engineering"
 }
 
 resource "google_folder" "legacy" {
-    parent = local.parent
-    display_name = "fldr-legacy"
+  parent       = local.parent
+  display_name = "fldr-legacy"
 }

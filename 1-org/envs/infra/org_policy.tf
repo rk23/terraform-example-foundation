@@ -35,14 +35,14 @@ resource "google_access_context_manager_access_policy" "access_policy" {
 *******************************************/
 
 module "org_app_engine_disable_code_download" {
-  source = "terraform-google-modules/org-policy/google"
-  version = "~> 3.0"
+  source          = "terraform-google-modules/org-policy/google"
+  version         = "~> 3.0"
   organization_id = local.organization_id
-  folder_id = local.folder_id
-  policy_for = local.policy_for
-  policy_type = "boolean"
-  enforce = "true"
-  constraint = "constraints/appengine.disableCodeDownload"
+  folder_id       = local.folder_id
+  policy_for      = local.policy_for
+  policy_type     = "boolean"
+  enforce         = "true"
+  constraint      = "constraints/appengine.disableCodeDownload"
 }
 
 
@@ -51,41 +51,41 @@ module "org_app_engine_disable_code_download" {
 *******************************************/
 
 module "org_cloud_functions_allowed_ingress_settings" {
-  source = "terraform-google-modules/org-policy/google"
-  version = "~> 3.0"
+  source          = "terraform-google-modules/org-policy/google"
+  version         = "~> 3.0"
   organization_id = local.organization_id
-  folder_id = local.folder_id
-  policy_for = local.policy_for
-  policy_type = "list"
+  folder_id       = local.folder_id
+  policy_for      = local.policy_for
+  policy_type     = "list"
   allow = [
   ]
   allow_list_length = 0
-  constraint = "constraints/cloudfunctions.allowedIngressSettings"
+  constraint        = "constraints/cloudfunctions.allowedIngressSettings"
 }
 
 module "org_cloud_cutions_allowed_vpc_connector_egress_settings" {
-  source = "terraform-google-modules/org-policy/google"
-  version = "~> 3.0"
+  source          = "terraform-google-modules/org-policy/google"
+  version         = "~> 3.0"
   organization_id = local.organization_id
-  folder_id = local.folder_id
-  policy_for = local.policy_for
-  policy_type = "list"
+  folder_id       = local.folder_id
+  policy_for      = local.policy_for
+  policy_type     = "list"
   allow = [
     "ALL_TRAFFIC"
   ]
   allow_list_length = 1
-  constraint = "constraints/cloudfunctions.allowedVpcConnectorEgressSettings"
+  constraint        = "constraints/cloudfunctions.allowedVpcConnectorEgressSettings"
 }
 
 module "org_cloud_functions_require_vpc_connector" {
-  source = "terraform-google-modules/org-policy/google"
-  version = "~> 3.0"
+  source          = "terraform-google-modules/org-policy/google"
+  version         = "~> 3.0"
   organization_id = local.organization_id
-  folder_id = local.folder_id
-  policy_for = local.policy_for
-  policy_type = "boolean"
-  enforce = "true"
-  constraint = "constraints/cloudfunctions.requireVPCConnector"
+  folder_id       = local.folder_id
+  policy_for      = local.policy_for
+  policy_type     = "boolean"
+  enforce         = "true"
+  constraint      = "constraints/cloudfunctions.requireVPCConnector"
 }
 
 /******************************************
@@ -157,8 +157,8 @@ module "org_restrict_authenticated_google_connection" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.restrictAuthenticatedGoogleConnection"
+  deny_list_length = 1
+  constraint       = "constraints/compute.restrictAuthenticatedGoogleConnection"
 }
 
 module "org_restrict_cloud_nat_usage" {
@@ -171,8 +171,8 @@ module "org_restrict_cloud_nat_usage" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.restrictCloudNATUsage"
+  deny_list_length = 1
+  constraint       = "constraints/compute.restrictCloudNATUsage"
 }
 
 module "org_restrict_dedicated_interconnect_usage" {
@@ -185,8 +185,8 @@ module "org_restrict_dedicated_interconnect_usage" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.restrictDedicatedInterconnectUsage"
+  deny_list_length = 1
+  constraint       = "constraints/compute.restrictDedicatedInterconnectUsage"
 }
 
 # To be overridden in projects that need LBs
@@ -205,8 +205,8 @@ module "org_restrict_lb_types" {
     "EXTERNAL_SSL_PROXY",
     "EXTERNAL_HTTP_HTTPS",
   ]
-  deny_list_length         = 6
-  constraint      = "constraints/compute.restrictLoadBalancerCreationForTypes"
+  deny_list_length = 6
+  constraint       = "constraints/compute.restrictLoadBalancerCreationForTypes"
 }
 
 module "org_restrict_partner_interconnect" {
@@ -221,8 +221,8 @@ module "org_restrict_partner_interconnect" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.restrictPartnerInterconnectUsage"
+  deny_list_length = 1
+  constraint       = "constraints/compute.restrictPartnerInterconnectUsage"
 }
 
 module "org_restrict_protocol_forwarding" {
@@ -236,8 +236,8 @@ module "org_restrict_protocol_forwarding" {
     "INTERNAL",
     "EXTERNAL",
   ]
-  deny_list_length         = 2
-  constraint      = "constraints/compute.restrictProtocolForwardingCreationForTypes"
+  deny_list_length = 2
+  constraint       = "constraints/compute.restrictProtocolForwardingCreationForTypes"
 }
 
 # To be overriden on environment folders to allow connecting with the common shared
@@ -252,8 +252,8 @@ module "org_restrict_shared_vpc_host_projects" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.restrictSharedVpcHostProjects"
+  deny_list_length = 1
+  constraint       = "constraints/compute.restrictSharedVpcHostProjects"
 }
 
 # To be overriden on enviornment folders to allow connecting with the 
@@ -268,8 +268,8 @@ module "org_restrict_shared_vpc_subnetworks" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.restrictSharedVpcSubnetworks"
+  deny_list_length = 1
+  constraint       = "constraints/compute.restrictSharedVpcSubnetworks"
 }
 
 # To be overriden on network projects that need it
@@ -283,21 +283,21 @@ module "org_restrict_vpc_peering" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.restrictVpcPeering"
+  deny_list_length = 1
+  constraint       = "constraints/compute.restrictVpcPeering"
 }
 
 # To be overriden on network projects that need it
 module "org_restrict_vpn_peer_ips" {
-  source          = "terraform-google-modules/org-policy/google"
-  version         = "~> 3.0"
-  organization_id = local.organization_id
-  folder_id       = local.folder_id
-  policy_for      = local.policy_for
-  policy_type     = "list"
-  deny = []
-  deny_list_length         = 0
-  constraint      = "constraints/compute.restrictVpnPeerIPs"
+  source           = "terraform-google-modules/org-policy/google"
+  version          = "~> 3.0"
+  organization_id  = local.organization_id
+  folder_id        = local.folder_id
+  policy_for       = local.policy_for
+  policy_type      = "list"
+  deny             = []
+  deny_list_length = 0
+  constraint       = "constraints/compute.restrictVpnPeerIPs"
 }
 
 module "org_shared_vpc_lien_removal" {
@@ -333,8 +333,8 @@ module "org_restrict_storage_resource_usage" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.storageResourceUseRestrictions"
+  deny_list_length = 1
+  constraint       = "constraints/compute.storageResourceUseRestrictions"
 }
 
 module "org_restrict_vm_can_ip_forward" {
@@ -347,8 +347,8 @@ module "org_restrict_vm_can_ip_forward" {
   deny = [
     "under:organizations/${local.org_id}"
   ]
-  deny_list_length         = 1
-  constraint      = "constraints/compute.vmCanIpForward"
+  deny_list_length = 1
+  constraint       = "constraints/compute.vmCanIpForward"
 }
 
 module "org_vm_external_ip_access" {
@@ -357,7 +357,7 @@ module "org_vm_external_ip_access" {
   organization_id = local.organization_id
   folder_id       = local.folder_id
   policy_for      = local.policy_for
-  vms_to_allow = []
+  vms_to_allow    = []
 }
 
 /******************************************
@@ -399,19 +399,19 @@ module "org_gcp_disable_cloud_logging" {
   policy_type     = "boolean"
   enforce         = "true"
   # The constraint is only supported in the Cloud Logging Healthcare API does not affect Cloud Audit Logs
-  constraint      = "constraints/gcp.disableCloudLogging"
+  constraint = "constraints/gcp.disableCloudLogging"
 }
 
 module "org_gcp_resource_locations" {
-  source          = "terraform-google-modules/org-policy/google"
-  version         = "~> 3.0"
-  organization_id = local.organization_id
-  folder_id       = local.folder_id
-  policy_for      = local.policy_for
-  policy_type     = "list"
-  allow           = var.resource_locations
+  source            = "terraform-google-modules/org-policy/google"
+  version           = "~> 3.0"
+  organization_id   = local.organization_id
+  folder_id         = local.folder_id
+  policy_for        = local.policy_for
+  policy_type       = "list"
+  allow             = var.resource_locations
   allow_list_length = length(var.resource_locations)
-  constraint      = "constraints/gcp.resourceLocations"
+  constraint        = "constraints/gcp.resourceLocations"
 }
 
 /******************************************
@@ -428,15 +428,15 @@ module "org_domain_restricted_sharing" {
 }
 
 module "org_iam_allow_sa_credential_lifetime_extension" {
-  source          = "terraform-google-modules/org-policy/google"
-  version         = "~> 3.0"
-  organization_id = local.organization_id
-  folder_id       = local.folder_id
-  policy_for      = local.policy_for
-  policy_type     = "list"
-  allow         = []
+  source            = "terraform-google-modules/org-policy/google"
+  version           = "~> 3.0"
+  organization_id   = local.organization_id
+  folder_id         = local.folder_id
+  policy_for        = local.policy_for
+  policy_type       = "list"
+  allow             = []
   allow_list_length = 0
-  constraint      = "constraints/iam.allowServiceAccountCredentialLifetimeExtension"
+  constraint        = "constraints/iam.allowServiceAccountCredentialLifetimeExtension"
 }
 
 module "org_disable_automatic_iam_grants_on_default_service_accounts" {
@@ -459,7 +459,7 @@ module "org_disable_sa_creation" {
   folder_id       = local.folder_id
   policy_for      = local.policy_for
   policy_type     = "boolean"
-  enforce         = "false"  # Allow service account creation
+  enforce         = "false" # Allow service account creation
   constraint      = "constraints/iam.automaticIamGrantsForDefaultServiceAccounts"
 }
 
@@ -496,7 +496,7 @@ module "org_gcp_services" {
   folder_id       = local.folder_id
   policy_for      = local.policy_for
   policy_type     = "list"
-  deny         = [
+  deny = [
     # "dns.googleapis.com",
     "doubleclicksearch.googleapis.com",
     "replicapool.googleapis.com",
@@ -504,7 +504,7 @@ module "org_gcp_services" {
     "resourceviews.googleapis.com",
   ]
   deny_list_length = 6
-  constraint      = "constraints/serviceuser.services"
+  constraint       = "constraints/serviceuser.services"
 }
 
 /******************************************

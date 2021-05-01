@@ -44,11 +44,11 @@ output "domains_to_allow" {
   description = "The list of domains to allow users from in IAM."
 }
 
-output folders {
+output "folders" {
   value = {
-    common = local.common_folder.id
-    billing = google_folder.billing.id
-    security = google_folder.security.id
+    common      = local.common_folder.id
+    billing     = google_folder.billing.id
+    security    = google_folder.security.id
     engineering = google_folder.engineering.id
   }
 }

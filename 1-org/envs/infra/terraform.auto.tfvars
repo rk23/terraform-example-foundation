@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-domains_to_allow = ["karavi.cloud"]
-org_id = "69124848450"
+domains_to_allow      = ["karavi.cloud"]
+org_id                = "69124848450"
 scc_notification_name = "scc-notify"
-environment = "infra"
-environment_code = "c"
-resource_locations = ["in:us-locations"]
+environment           = "infra"
+environment_code      = "c"
+resource_locations    = ["in:us-locations"]
