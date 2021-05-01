@@ -53,14 +53,14 @@ resource "google_project_organization_policy" "vpc_services_denied" {
 }
 
 resource "google_folder_organization_policy" "allow_shared_vpc" {
-    folder = google_folder.env.id
-    constraint = "constraints/compute.restrictSharedVpcHostProjects"
+  folder     = google_folder.env.id
+  constraint = "constraints/compute.restrictSharedVpcHostProjects"
 
-    list_policy {
-        allow {
-            values = [
-                "projects/${module.vpc_host_project.project_id}"
-            ]
-        }
+  list_policy {
+    allow {
+      values = [
+        "projects/${module.vpc_host_project.project_id}"
+      ]
     }
+  }
 }

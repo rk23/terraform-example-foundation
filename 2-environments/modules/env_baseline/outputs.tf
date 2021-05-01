@@ -21,12 +21,12 @@ output "env_folder" {
 
 output "observability_project_id" {
   description = "Project for observability infra"
-  value = module.observability_project.project_id
+  value       = module.observability_project.project_id
 }
 
 output "vpc_host_project_id" {
   description = "VPC Host Project"
-  value = module.vpc_host_project.project_id
+  value       = module.vpc_host_project.project_id
 }
 
 output "env_secrets_project_id" {
