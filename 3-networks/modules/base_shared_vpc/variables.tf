@@ -1,19 +1,3 @@
-/**
- * Copyright 2021 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 variable "org_id" {
   type        = string
   description = "Organization ID"
@@ -24,12 +8,6 @@ variable "project_id" {
   description = "Project ID for Private Shared VPC."
 }
 
-variable "mode" {
-  type        = string
-  description = "Network deployment mode, should be set to `hub` or `spoke` when `enable_hub_and_spoke` architecture choosen, keep as `null` otherwise."
-  default     = null
-}
-
 variable "environment_code" {
   type        = string
   description = "A short form of the folder level resources (environment) within the Google Cloud organization."
@@ -38,11 +16,6 @@ variable "environment_code" {
 variable "default_region1" {
   type        = string
   description = "Default region 1 for subnets and Cloud Routers"
-}
-
-variable "default_region2" {
-  type        = string
-  description = "Default region 2 for subnets and Cloud Routers"
 }
 
 variable "nat_enabled" {
@@ -63,39 +36,27 @@ variable "nat_num_addresses_region1" {
   default     = 2
 }
 
-variable "nat_num_addresses_region2" {
-  type        = number
-  description = "Number of external IPs to reserve for second Cloud NAT."
-  default     = 2
-}
-
 variable "bgp_asn_subnet" {
   type        = number
   description = "BGP ASN for Subnets cloud routers."
 }
 
-variable "subnets" {
+variable "nat_enabled_subnets" {
   type        = list(map(string))
-  description = "The list of subnets being created"
+  description = "The list of subnets being created with NAT access"
   default     = []
 }
 
-variable "secondary_ranges" {
-  type        = map(list(object({ range_name = string, ip_cidr_range = string })))
-  description = "Secondary ranges that will be used in some of the subnets"
+variable "nat_subnet_secondary_ranges" {
+  type        = map(list(map(string)))
+  description = "Secondary ranges for nat enabled subnets"
   default     = {}
 }
 
-variable "dns_enable_inbound_forwarding" {
-  type        = bool
-  description = "Toggle inbound query forwarding for VPC DNS."
-  default     = true
-}
-
-variable "dns_enable_logging" {
-  type        = bool
-  description = "Toggle DNS logging for VPC DNS."
-  default     = true
+variable "private_subnets" {
+  type        = list(map(string))
+  description = "The list of subnets being created without NAT access"
+  default     = []
 }
 
 variable "firewall_enable_logging" {
@@ -115,23 +76,23 @@ variable "private_service_cidr" {
   default     = null
 }
 
-variable "windows_activation_enabled" {
-  type        = bool
-  description = "Enable Windows license activation for Windows workloads."
-  default     = false
+variable "vpc_description" {
+  type        = string
+  description = "Descriptive portion of the name of the VPC, e.g. 'shared-base'"
+  default     = "shared-base"
 }
 
-variable "nat_num_addresses" {
-  type        = number
-  description = "Number of external IPs to reserve for Cloud NAT."
-  default     = 2
+variable "vpc_detailed_description" {
+  type        = string
+  description = "The description field of the VPC"
+  default     = ""
 }
 
-variable "optional_fw_rules_enabled" {
-  type        = bool
-  description = "Toggle creation of optional firewall rules: IAP SSH, IAP RDP and Internal & Global load balancing health check and load balancing IP ranges."
-  default     = false
+variable "auto_create_subnetworks" {
+  type = bool
+  description = "When set to true, the network is created in 'auto subnet mode' and it will create a subnet for each region automatically across the  "
 }
+
 
 variable "parent_folder" {
   description = "Optional - if using a folder for testing."

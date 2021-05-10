@@ -19,7 +19,7 @@
  *****************************************/
 
 resource "google_compute_firewall" "deny_all_egress" {
-  name      = "fw-${var.environment_code}-shared-base-65535-e-d-all-all-all"
+  name      = "fw-${var.environment_code}-e-deny-all"
   network   = module.main.network_name
   project   = var.project_id
   direction = "EGRESS"
@@ -42,44 +42,13 @@ resource "google_compute_firewall" "deny_all_egress" {
   destination_ranges = ["0.0.0.0/0"]
 }
 
-
-resource "google_compute_firewall" "allow_private_api_egress" {
-  name      = "fw-${var.environment_code}-shared-base-65534-e-a-allow-google-apis-all-tcp-443"
-  network   = module.main.network_name
-  project   = var.project_id
-  direction = "EGRESS"
-  priority  = 65534
-
-  dynamic "log_config" {
-    for_each = var.firewall_enable_logging == true ? [{
-      metadata = "INCLUDE_ALL_METADATA"
-    }] : []
-
-    content {
-      metadata = log_config.value.metadata
-    }
-  }
-
-  allow {
-    protocol = "tcp"
-    ports    = ["443"]
-  }
-
-  destination_ranges = [local.private_googleapis_cidr]
-
-  target_tags = ["allow-google-apis"]
-}
-
-/******************************************
-  Optional firewall rules
- *****************************************/
-
 // Allow SSH via IAP when using the allow-iap-ssh tag for Linux workloads.
 resource "google_compute_firewall" "allow_iap_ssh" {
-  count   = var.optional_fw_rules_enabled ? 1 : 0
-  name    = "fw-${var.environment_code}-shared-base-1000-i-a-all-allow-iap-ssh-tcp-22"
-  network = module.main.network_name
-  project = var.project_id
+  name      = "fw-${var.environment_code}-i-allow-iap-ssh"
+  network   = module.main.network_name
+  project   = var.project_id
+  direction = "INGRESS"
+  priority  = "1000"
 
   dynamic "log_config" {
     for_each = var.firewall_enable_logging == true ? [{
@@ -99,72 +68,17 @@ resource "google_compute_firewall" "allow_iap_ssh" {
     ports    = ["22"]
   }
 
-  target_tags = ["allow-iap-ssh"]
-}
-
-// Allow RDP via IAP when using the allow-iap-rdp tag for Windows workloads.
-resource "google_compute_firewall" "allow_iap_rdp" {
-  count   = var.optional_fw_rules_enabled ? 1 : 0
-  name    = "fw-${var.environment_code}-shared-base-1000-i-a-all-allow-iap-rdp-tcp-3389"
-  network = module.main.network_name
-  project = var.project_id
-
-  dynamic "log_config" {
-    for_each = var.firewall_enable_logging == true ? [{
-      metadata = "INCLUDE_ALL_METADATA"
-    }] : []
-
-    content {
-      metadata = log_config.value.metadata
-    }
-  }
-
-  // Cloud IAP's TCP forwarding netblock
-  source_ranges = concat(data.google_netblock_ip_ranges.iap_forwarders.cidr_blocks_ipv4)
-
-  allow {
-    protocol = "tcp"
-    ports    = ["3389"]
-  }
-
-  target_tags = ["allow-iap-rdp"]
-}
-
-// Allow access to kms.windows.googlecloud.com for Windows license activation
-resource "google_compute_firewall" "allow_windows_activation" {
-  count     = var.windows_activation_enabled ? 1 : 0
-  name      = "fw-${var.environment_code}-shared-base-0-e-a-allow-win-activation-all-tcp-1688"
-  network   = module.main.network_name
-  project   = var.project_id
-  direction = "EGRESS"
-  priority  = 0
-
-  dynamic "log_config" {
-    for_each = var.firewall_enable_logging == true ? [{
-      metadata = "INCLUDE_ALL_METADATA"
-    }] : []
-
-    content {
-      metadata = log_config.value.metadata
-    }
-  }
-
-  allow {
-    protocol = "tcp"
-    ports    = ["1688"]
-  }
-
-  destination_ranges = ["35.190.247.13/32"]
-
-  target_tags = ["allow-win-activation"]
+  target_tags = ["allow-iap-ssh", "gke-node"]
 }
 
 // Allow traffic for Internal & Global load balancing health check and load balancing IP ranges.
 resource "google_compute_firewall" "allow_lb" {
-  count   = var.optional_fw_rules_enabled ? 1 : 0
-  name    = "fw-${var.environment_code}-shared-base-1000-i-a-all-allow-lb-tcp-80-8080-443"
-  network = module.main.network_name
-  project = var.project_id
+  count     = var.optional_fw_rules_enabled ? 1 : 0
+  name      = "fw-${var.environment_code}-i-allow-lb-healthcheck"
+  network   = module.main.network_name
+  project   = var.project_id
+  direction = "INGRESS"
+  priority  = 1000
 
   dynamic "log_config" {
     for_each = var.firewall_enable_logging == true ? [{
@@ -184,16 +98,16 @@ resource "google_compute_firewall" "allow_lb" {
     ports    = ["80", "8080", "443"]
   }
 
-  target_tags = ["allow-lb"]
+  target_tags = ["allow-lb", "gke-node"]
 }
 
-resource "google_compute_firewall" "allow_all_egress" {
-  count     = var.allow_all_egress_ranges != null ? 1 : 0
-  name      = "fw-${var.environment_code}-shared-base-1000-e-a-all"
-  network   = module.main.network_name
+resource "google_compute_firewall" "allow_internet_egress" {
+  count     = var.nat_enabled ? 1 : 0
+  name      = "fw-${var.environment_code}-e-allow-internet"
+  network   = google_compute_network.network.network_name
   project   = var.project_id
   direction = "EGRESS"
-  priority  = 1000
+  priority  = 65533
 
   dynamic "log_config" {
     for_each = var.firewall_enable_logging == true ? [{
@@ -206,19 +120,24 @@ resource "google_compute_firewall" "allow_all_egress" {
   }
 
   allow {
-    protocol = "all"
+    protocol = "tcp"
   }
 
-  destination_ranges = var.allow_all_egress_ranges
+  allow {
+    protocol = "udp"
+  }
+
+  destination_ranges = ["0.0.0.0/0"]
+
+  target_tags = ["gke-node"]
 }
 
-resource "google_compute_firewall" "allow_all_ingress" {
-  count     = var.allow_all_ingress_ranges != null ? 1 : 0
-  name      = "fw-${var.environment_code}-shared-base-1000-i-a-all"
+resource "google_compute_firewall" "deny_all_ingress" {
+  name      = "fw-${var.environment_code}-i-deny-all"
   network   = module.main.network_name
   project   = var.project_id
   direction = "INGRESS"
-  priority  = 1000
+  priority  = 65533
 
   dynamic "log_config" {
     for_each = var.firewall_enable_logging == true ? [{
@@ -230,9 +149,9 @@ resource "google_compute_firewall" "allow_all_ingress" {
     }
   }
 
-  allow {
+  deny {
     protocol = "all"
   }
 
-  source_ranges = var.allow_all_ingress_ranges
+  source_ranges = ["0.0.0.0/0"]
 }
