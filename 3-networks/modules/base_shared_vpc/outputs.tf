@@ -1,10 +1,10 @@
 output "network_name" {
-  value       = google_compute_network.network.network_name
+  value       = google_compute_network.network.name
   description = "The name of the VPC being created"
 }
 
 output "network_self_link" {
-  value       = google_compute_network.network.network_self_link
+  value       = google_compute_network.network.self_link
   description = "The URI of the VPC being created"
 }
 
@@ -28,6 +28,6 @@ output "nat_enabled_subnets" {
 }
 
 output "private_subnets" {
-  value       = google_compute_network.private_subnetwork
+  value       = google_compute_subnetwork.private_subnetwork
   description = "Subnets without external access"
 }

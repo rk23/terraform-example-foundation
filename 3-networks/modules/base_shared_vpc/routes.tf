@@ -6,6 +6,6 @@ resource "google_compute_route" "egress_internet" {
   description      = "Tag based route through IGW to access internet"
   dest_range       = "0.0.0.0/0"
   tags             = ["gke-node"]
-  next_hop_gateway = "default_internet_gateway"
+  next_hop_gateway = "default-internet-gateway"
   priority         = "1000"
 }

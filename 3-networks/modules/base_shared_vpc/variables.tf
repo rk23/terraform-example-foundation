@@ -36,10 +36,6 @@ variable "nat_num_addresses_region1" {
   default     = 2
 }
 
-variable "bgp_asn_subnet" {
-  type        = number
-  description = "BGP ASN for Subnets cloud routers."
-}
 
 variable "nat_enabled_subnets" {
   type        = list(map(string))
@@ -47,7 +43,7 @@ variable "nat_enabled_subnets" {
   default     = []
 }
 
-variable "nat_subnet_secondary_ranges" {
+variable "subnet_secondary_ranges" {
   type        = map(list(map(string)))
   description = "Secondary ranges for nat enabled subnets"
   default     = {}
@@ -76,7 +72,7 @@ variable "private_service_cidr" {
   default     = null
 }
 
-variable "vpc_description" {
+variable "vpc_name_suffix" {
   type        = string
   description = "Descriptive portion of the name of the VPC, e.g. 'shared-base'"
   default     = "shared-base"
@@ -89,29 +85,41 @@ variable "vpc_detailed_description" {
 }
 
 variable "auto_create_subnetworks" {
-  type = bool
-  description = "When set to true, the network is created in 'auto subnet mode' and it will create a subnet for each region automatically across the  "
+  type        = bool
+  description = "When set to true, the network is created in 'auto subnet mode' and it will create a subnet for each region automatically. When set to false, the network is created in 'custom subnet mode' so the user can explicitly connect subnetwork resources."
+  default     = false
 }
 
+variable "routing_mode" {
+  type        = string
+  default     = "GLOBAL"
+  description = "The network routing mode (default 'GLOBAL')"
+}
+
+variable "mtu" {
+  type        = number
+  description = "The network MTU. Must be a value between 1460 and 1500 inclusive. If set to 0 (meaning MTU is unset), the network will default to 1460 automatically."
+  default     = 0
+}
+
+variable "terraform_service_account" {
+  description = "Terraform service account used to apply the terraform"
+  type        = string
+}
+
+variable "subnet_access_groups" {
+  description = "G Suite or Cloud Identity groups that have access to the subnets of the shared VPC"
+  type        = list(string)
+}
+
+variable "gke_masters_cidrs" {
+  description = "The CIDR for the GKE master nodes for each cluster."
+  type        = map(string)
+  default     = {}
+}
 
 variable "parent_folder" {
   description = "Optional - if using a folder for testing."
   type        = string
   default     = ""
-}
-
-variable "folder_prefix" {
-  description = "Name prefix to use for folders created."
-  type        = string
-  default     = "fldr"
-}
-
-variable "allow_all_egress_ranges" {
-  description = "List of network ranges to which all egress traffic will be allowed"
-  default     = null
-}
-
-variable "allow_all_ingress_ranges" {
-  description = "List of network ranges from which all ingress traffic will be allowed"
-  default     = null
 }

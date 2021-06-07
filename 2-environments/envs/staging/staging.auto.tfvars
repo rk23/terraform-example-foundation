@@ -1,2 +1,2 @@
-environment = "staging"
+environment      = "staging"
 environment_code = "s"

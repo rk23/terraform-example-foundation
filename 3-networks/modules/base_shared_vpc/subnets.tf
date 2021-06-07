@@ -1,23 +1,23 @@
 locals {
   nat_enabled_subnets = {
     for i, x in var.nat_enabled_subnets :
-    "sb-${var.environment_code}-${var.vpc_description}-${x.subnet_region}-${x.subnet_name}" =>
+    "sb-${var.environment_code}-${var.vpc_name_suffix}-${x.subnet_region}-${x.subnet_name}" =>
     merge(x, {
-      fullname : "sb-${var.environment_code}-${var.vpc_description}-${x.subnet_region}-${x.subnet_name}"
+      fullname : "sb-${var.environment_code}-${var.vpc_name_suffix}-${x.subnet_region}-${x.subnet_name}"
     })
   }
   private_subnets = {
     for i, x in var.private_subnets :
-    "sb-${var.environment_code}-${var.vpc_description}-${x.subnet_region}-${x.subnet_name}" =>
+    "sb-${var.environment_code}-${var.vpc_name_suffix}-${x.subnet_region}-${x.subnet_name}" =>
     merge(x, {
-      fullname : "sb-${var.environment_code}-${var.vpc_description}-${x.subnet_region}-${x.subnet_name}"
+      fullname : "sb-${var.environment_code}-${var.vpc_name_suffix}-${x.subnet_region}-${x.subnet_name}"
     })
   }
   secondary_ip_ranges = {
     for subnet_name, ranges in var.subnet_secondary_ranges :
     subnet_name => [for range in ranges : lookup(range, "range_name", null) == null ?
       merge(range, {
-        range_name : "rn-${var.environment_code}-${var.vpc_description}-${range.subnet_region}-${subnet_name}-${range.range_description}"
+        range_name : "rn-${var.environment_code}-${var.vpc_name_suffix}-${range.subnet_region}-${subnet_name}-${range.range_name_suffix}"
     }) : range]
   }
   subnet_self_links = concat(
@@ -28,14 +28,10 @@ locals {
     var.nat_enabled_subnets[*].subnet_name,
     var.private_subnets[*].subnet_name
   )
-  subnet_access_groups = [for group in var.subnet_access_groups :
-    length(regexall(".+@._+\\..+", group)) == 0
-    ? "group:${group}@${var.domain}"
-    : "group:${group}"
-  ]
+  subnet_access_groups = [for group in var.subnet_access_groups : "group:${group}"]
   subnet_member_permissions = merge(
     {
-      for groupnet in setproduct(keys(local.net_enabled_subnets), local.subnet_access_groups) :
+      for groupnet in setproduct(keys(local.nat_enabled_subnets), local.subnet_access_groups) :
       "${local.nat_enabled_subnets[groupnet[0]].fullname}/${groupnet[1]}" =>
       {
         subnetwork : local.nat_enabled_subnets[groupnet[0]].fullname

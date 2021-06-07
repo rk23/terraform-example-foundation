@@ -20,7 +20,7 @@
 
 resource "google_compute_firewall" "deny_all_egress" {
   name      = "fw-${var.environment_code}-e-deny-all"
-  network   = module.main.network_name
+  network   = google_compute_network.network.name
   project   = var.project_id
   direction = "EGRESS"
   priority  = 65535
@@ -45,7 +45,7 @@ resource "google_compute_firewall" "deny_all_egress" {
 // Allow SSH via IAP when using the allow-iap-ssh tag for Linux workloads.
 resource "google_compute_firewall" "allow_iap_ssh" {
   name      = "fw-${var.environment_code}-i-allow-iap-ssh"
-  network   = module.main.network_name
+  network   = google_compute_network.network.name
   project   = var.project_id
   direction = "INGRESS"
   priority  = "1000"
@@ -73,9 +73,8 @@ resource "google_compute_firewall" "allow_iap_ssh" {
 
 // Allow traffic for Internal & Global load balancing health check and load balancing IP ranges.
 resource "google_compute_firewall" "allow_lb" {
-  count     = var.optional_fw_rules_enabled ? 1 : 0
   name      = "fw-${var.environment_code}-i-allow-lb-healthcheck"
-  network   = module.main.network_name
+  network   = google_compute_network.network.name
   project   = var.project_id
   direction = "INGRESS"
   priority  = 1000
@@ -104,7 +103,7 @@ resource "google_compute_firewall" "allow_lb" {
 resource "google_compute_firewall" "allow_internet_egress" {
   count     = var.nat_enabled ? 1 : 0
   name      = "fw-${var.environment_code}-e-allow-internet"
-  network   = google_compute_network.network.network_name
+  network   = google_compute_network.network.name
   project   = var.project_id
   direction = "EGRESS"
   priority  = 65533
@@ -134,7 +133,7 @@ resource "google_compute_firewall" "allow_internet_egress" {
 
 resource "google_compute_firewall" "deny_all_ingress" {
   name      = "fw-${var.environment_code}-i-deny-all"
-  network   = module.main.network_name
+  network   = google_compute_network.network.name
   project   = var.project_id
   direction = "INGRESS"
   priority  = 65533
