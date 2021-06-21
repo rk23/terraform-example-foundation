@@ -23,9 +23,9 @@ variable "folder_id" {
   type        = string
 }
 
-variable "group_permissions" {
+variable "group_role_bindings" {
   description = "A map of groups and roles for this project. If the group name does not end in `@<domain>`, `@<var.domain>` will be suffixed"
-  type        = map(string)
+  type        = map(list(string))
 }
 
 variable "org_shortname" {
@@ -38,7 +38,7 @@ variable "org_id" {
   type        = string
 }
 
-variable "project_name" {
+variable "project_name_suffix" {
   description = "The name for the project"
   type        = string
 }
@@ -130,12 +130,6 @@ variable "bucket_project" {
   default     = ""
 }
 
-variable "credentials_path" {
-  description = "Path to a service account credentials file with rights to run the Project Factory. If this file is absent Terraform will fall back to Application Default Credentials."
-  type        = string
-  default     = ""
-}
-
 variable "default_service_account" {
   description = "Project default service account setting: can be one of `delete`, `deprivilege`, `disable`, or `keep`."
   default     = "disable"
@@ -166,12 +160,6 @@ variable "enable_shared_vpc_service_project" {
   default     = false
 }
 
-variable "impersonate_service_account" {
-  description = "An optional service account to impersonate"
-  type        = string
-  default     = ""
-}
-
 variable "lien" {
   description = "Add a lien on the project to prevent accidental deletion"
   type        = bool
@@ -182,6 +170,12 @@ variable "sa_role" {
   description = "A role to give the default Service Account for the project (defaults to none)"
   type        = string
   default     = ""
+}
+
+variable "service_account_role_bindings" {
+  description = "A map of service accounts to bind to roles for this project. If the group name does not end in `@<domain>`, `@<var.domain>` will be suffixed"
+  type        = map(list(string))
+  default = {}
 }
 
 variable "shared_vpc_subnets" {

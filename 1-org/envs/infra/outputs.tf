@@ -52,3 +52,8 @@ output "folders" {
     engineering = google_folder.engineering.id
   }
 }
+
+output "gke_service_agent_firewall_role" {
+  value       = google_organization_iam_custom_role.gce_firewall_admin_role.id
+  description = "Name of the custom role defined for gke service agents to manage firewalls"
+}

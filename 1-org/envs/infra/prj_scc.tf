@@ -1,12 +1,12 @@
 module "scc" {
   source = "../../../modules/project_factory"
 
-  project_name = "scc"
-  project_type = "infra"
-  team_name    = "alpha"
+  project_name_suffix = "scc"
+  project_type        = "infra"
+  team_name           = "alpha"
 
-  group_permissions = {
-    "gcp-organization-admins" = "roles/owner"
+  group_role_bindings = {
+    "gcp-organization-admins" = ["roles/owner"]
   }
 
   activate_apis = [

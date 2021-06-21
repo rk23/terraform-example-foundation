@@ -1,12 +1,12 @@
 module "org_audit_logs" {
   source = "../../../modules/project_factory"
 
-  project_name = "audit-logs"
-  project_type = "infra"
-  team_name    = "alpha"
+  project_name_suffix = "audit-logs"
+  project_type        = "infra"
+  team_name           = "alpha"
 
-  group_permissions = {
-    "gcp-organization-admins" = "roles/owner"
+  group_role_bindings = {
+    "gcp-organization-admins" = ["roles/owner"]
   }
 
   activate_apis = [

@@ -41,6 +41,7 @@ module "seed_bootstrap" {
     "roles/billing.user",
     "roles/compute.networkAdmin",
     "roles/compute.xpnAdmin",
+    "roles/iam.organizationRoleAdmin",
     "roles/iam.securityAdmin",
     "roles/iam.serviceAccountAdmin",
     "roles/logging.configWriter",
@@ -48,7 +49,7 @@ module "seed_bootstrap" {
     "roles/resourcemanager.projectCreator",
     "roles/resourcemanager.folderAdmin",
     "roles/securitycenter.notificationConfigEditor",
-    "roles/resourcemanager.organizationViewer"
+    "roles/resourcemanager.organizationViewer",
   ]
 }
 
