@@ -5,12 +5,12 @@
 module "env_secrets" {
   source = "../../../modules/project_factory"
 
-  project_name = "secrets"
+  project_name_suffix = "secrets"
   project_type = "infra"
   team_name    = "alpha"
 
-  group_permissions = {
-    "gcp-organization-admins" = "roles/owner"
+  group_role_bindings = {
+    "gcp-organization-admins" = ["roles/owner"]
   }
 
   activate_apis = [

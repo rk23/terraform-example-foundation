@@ -5,12 +5,12 @@
 module "env_dns" {
   source = "../../../modules/project_factory"
 
-  project_name = "dns"
+  project_name_suffix = "dns"
   project_type = "infra"
   team_name    = "alpha"
 
-  group_permissions = {
-    "gcp-organization-admins" = "roles/owner"
+  group_role_bindings = {
+    "gcp-organization-admins" = ["roles/owner"]
   }
 
   activate_apis = [

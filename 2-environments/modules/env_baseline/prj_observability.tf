@@ -5,12 +5,12 @@
 module "observability_project" {
   source = "../../../modules/project_factory"
 
-  project_name = "observability"
+  project_name_suffix = "observability"
   project_type = "infra"
   team_name    = "alpha"
 
-  group_permissions = {
-    "gcp-organization-admins" = "roles/owner"
+  group_role_bindings = {
+    "gcp-organization-admins" = ["roles/owner"]
   }
 
   activate_apis = [

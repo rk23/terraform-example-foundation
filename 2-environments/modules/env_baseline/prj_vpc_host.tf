@@ -5,16 +5,17 @@
 module "vpc_host_project" {
   source = "../../../modules/project_factory"
 
-  project_name = "vpc-host"
+  project_name_suffix = "vpc-host"
   project_type = "infra"
   team_name    = "alpha"
 
-  group_permissions = {
-    "gcp-organization-admins" = "roles/owner"
+  group_role_bindings = {
+    "gcp-organization-admins" = ["roles/owner"]
   }
 
   activate_apis = [
     "compute.googleapis.com",
+    "container.googleapis.com",
     "servicenetworking.googleapis.com",
     "logging.googleapis.com",
     "billingbudgets.googleapis.com",

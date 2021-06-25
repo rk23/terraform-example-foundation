@@ -16,24 +16,26 @@ module "seed_bootstrap" {
   project_prefix                 = var.project_prefix
 
   activate_apis = [
-    "serviceusage.googleapis.com",
-    "servicenetworking.googleapis.com",
-    "cloudkms.googleapis.com",
-    "compute.googleapis.com",
-    "logging.googleapis.com",
-    "bigquery.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "cloudbilling.googleapis.com",
-    "cloudbuild.googleapis.com",
-    "iam.googleapis.com",
+    "accesscontextmanager.googleapis.com",
     "admin.googleapis.com",
     "appengine.googleapis.com",
-    "storage-api.googleapis.com",
+    "bigquery.googleapis.com",
+    "billingbudgets.googleapis.com",
+    "cloudbilling.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "cloudidentity.googleapis.com",
+    "cloudkms.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
+    "container.googleapis.com",
+    "iam.googleapis.com",
+    "logging.googleapis.com",
     "monitoring.googleapis.com",
     "pubsub.googleapis.com",
     "securitycenter.googleapis.com",
-    "accesscontextmanager.googleapis.com",
-    "billingbudgets.googleapis.com"
+    "servicenetworking.googleapis.com",
+    "serviceusage.googleapis.com",
+    "storage-api.googleapis.com",
   ]
 
   sa_org_iam_permissions = [

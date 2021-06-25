@@ -92,7 +92,7 @@ module "base_shared_vpc" {
   domain                    = local.domain
   environment_code          = var.environment_code
   firewall_enable_logging   = var.firewall_enable_logging
-  nat_enabled               = var.nat_enabled
+  nat_enabled               = true 
   nat_bgp_asn               = var.nat_bgp_asn
   nat_num_addresses_region1 = var.nat_num_addresses_region1
   parent_folder             = var.parent_folder
