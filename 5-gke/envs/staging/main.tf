@@ -62,3 +62,20 @@ module "gke" {
   terraform_service_account = local.terraform_service_account
   cluster_admin_groups      = var.cluster_admin_groups
 }
+
+
+# resource "google_compute_firewall" "enable_nginx" {
+#   name    = "fw-${var.environment_code}-i-enable-nginx"
+#   network = local.network.name
+#   project = local.network.vpc_host_project_id
+#   direction = "INGRESS"
+#   priority = 65533
+#   source_ranges = [local.network_allocation.master_ipv4_cidr_block]
+
+#   allow {
+#     protocol = "tcp"
+#     ports    = ["8443"]
+#   }
+
+#   target_tags = ["gke-node"]
+# }

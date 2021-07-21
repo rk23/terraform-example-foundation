@@ -154,3 +154,5 @@ resource "google_compute_firewall" "deny_all_ingress" {
 
   source_ranges = ["0.0.0.0/0"]
 }
+
+# TODO: Firewall rule gke-gke-s-staging-01-78562ce1-master manually updated to allow ingress to 8443 for nginx ingress controller
