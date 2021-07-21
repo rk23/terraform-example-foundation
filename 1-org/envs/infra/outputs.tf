@@ -57,3 +57,8 @@ output "gke_service_agent_firewall_role" {
   value       = google_organization_iam_custom_role.gce_firewall_admin_role.id
   description = "Name of the custom role defined for gke service agents to manage firewalls"
 }
+
+output "service_project_owner_role" {
+  value = google_organization_iam_custom_role.service_project_owner.id
+  description = "Name of the custom role defined for service project owners"
+}

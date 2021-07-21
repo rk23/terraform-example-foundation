@@ -9,6 +9,11 @@ locals {
   ]
 }
 
+resource "googe_organization_iam_custom_role" "service_project_owner" {
+  role_id = "rl.serviceProjectOwner"
+  title = "Custom role for service project owners"
+}
+
 resource "google_organization_iam_custom_role" "gce_firewall_admin_role" {
   role_id     = "role.GCEFirewallAdmin"
   title       = "GCE Firewall Admin - Custom"

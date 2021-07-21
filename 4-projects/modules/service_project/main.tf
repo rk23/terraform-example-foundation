@@ -1,7 +1,13 @@
-# locals {
-#     service_project_owner_role = var.compute_enabled ? data.terraform_remote_state.org.outputs.service_project_owner_compute_role : data.terraform_remote_state.org.outputs.service_project_owner_role
-#     # TODO: cicd service account
-# }
+locals {
+    # service_project_owner_role = var.compute_enabled ? data.terraform_remote_state.org.outputs.service_project_owner_compute_role : data.terraform_remote_state.org.outputs.service_project_owner_role
+    service_project_owner_role = ""
+    service_project_owners = ["gcp-organization-admins@karavi.cloud"]
+
+    service_project_owner_group_role_bindings = { for group in local.service_project_owners : group => 
+      concat(lookup(var.additional_group_role_bindings, group, []), [])
+    }
+    group_role_bindings = merge(var.additional_group_role_bindings, local.service_project_owner_group_role_bindings)
+}
 
 module "service_project" {
   source = "../../../modules/project_factory"
@@ -20,12 +26,12 @@ module "service_project" {
   budget_amount                      = var.budget_amount
   domain                             = var.domain
   environment                        = var.environment_code
-  environment_code                   = var.environemnt_code
-  essential_contacts                 = var.service_project_owners
+  environment_code                   = var.environment_code
   folder_id                          = var.folder_id
+  group_role_bindings                = local.group_role_bindings
   org_shortname                      = var.org_shortname
   org_id                             = var.org_id
-  group_role_bindings                = local.group_role_bindings
+  project_name_suffix                = var.project_name_suffix
   team_name                          = var.team_name
   terraform_service_account          = var.terraform_service_account
   terraform_state_project_id         = var.terraform_state_project_id
@@ -36,10 +42,10 @@ module "service_project" {
   svpc_host_project_id = data.google_compute_network.shared_vpc.project
 }
 
-data "terraform_reomte_state" "env" {
+data "terraform_remote_state" "env" {
   backend = "gcs"
   config = {
-    bucket = "bkt-kvi-foundation-tfstate"
+    bucket = "bkt-kvi-gcp-foundation-tfstate"
     prefix = "terraform/environments/staging"
   }
 }

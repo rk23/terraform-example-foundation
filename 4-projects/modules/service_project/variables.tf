@@ -3,11 +3,6 @@ variable "project_name_suffix" {
   type        = string
 }
 
-variable "service_project_owners" {
-  description = "A list of groups for this project that will be assigned service project owner role"
-  type        = list(string)
-}
-
 variable "activate_apis" {
   description = "The list of apis to activate in project"
   type        = list(string)
